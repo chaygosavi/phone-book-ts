@@ -1,11 +1,13 @@
 import { useState } from "react";
 import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { AddCategory } from "./components/AddCategory";
 
 function App() {
-  const [count, setCount] = useState(0);
-
-  return <h1 className="text-3xl font-bold underline">Hello world!</h1>;
+  return (
+    <div>
+      <AddCategory />
+    </div>
+  );
 }
 
 export default App;
