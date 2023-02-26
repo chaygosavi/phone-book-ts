@@ -1,33 +1,18 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { addCategory } from "../api/addCategory";
+import { Context } from "../App";
+import { BASE_URL } from "../config";
+import { Category } from "./Category";
 
 export const AddCategory = () => {
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState(null);
-  console.log("categories", categories);
-
-  useEffect(() => {
-    (async () => {
-      const res = await fetch("http://localhost:9999", {
-        method: "GET",
-      });
-
-      const categories = await res.json();
-      setCategories(categories);
-    })();
-  }, []);
+  const { categories, setCategories } = useContext(Context);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    const response = await fetch("http://localhost:9999", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ category }),
-    });
-
-    const newCategory = await response.json();
-    console.log("newCategory", newCategory);
+    const newCategory = await addCategory(category);
+    setCategories([...categories!, newCategory]);
+    setCategory("");
   };
 
   return (
@@ -56,6 +41,16 @@ export const AddCategory = () => {
           <button className="p-2 bg-orange-400 rounded-lg">Add Category</button>
         </div>
       </form>
+      <div className="grid grid-cols-4 space-x-2">
+        {categories?.map((category) => (
+          <Category
+            key={category._id}
+            categoryId={category._id}
+            category={category.category}
+            contacts={category.contact}
+          />
+        ))}
+      </div>
     </div>
   );
 };
