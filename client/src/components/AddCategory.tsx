@@ -1,7 +1,6 @@
-import React, { FormEvent, useContext, useEffect, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { addCategory } from "../api/addCategory";
 import { Context } from "../App";
-import { BASE_URL } from "../config";
 import { Category } from "./Category";
 
 export const AddCategory = () => {
