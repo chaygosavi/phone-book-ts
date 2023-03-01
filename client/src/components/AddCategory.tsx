@@ -46,7 +46,7 @@ export const AddCategory = () => {
             key={category._id}
             categoryId={category._id}
             category={category.category}
-            contacts={category.contact}
+            contacts={category.contacts}
           />
         ))}
       </div>

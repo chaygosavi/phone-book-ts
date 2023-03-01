@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { addContact } from "../api/addContact";
 import { getCategory } from "../api/getCategory";
 import { updatedTitle } from "../api/updateTitle";
+import { FaUserAlt } from "react-icons/fa";
+import { deleteContact } from "../api/deleteContact";
 
 export const Contact = () => {
   const [title, setTitle] = useState("");
@@ -18,7 +20,7 @@ export const Contact = () => {
       const category = await getCategory(categoryId!);
       setCategory(category);
     })();
-  }, []);
+  }, [categoryId]);
 
   const handleUpdateTitle = async () => {
     const newTitle = await updatedTitle(title, categoryId!);
@@ -40,6 +42,16 @@ export const Contact = () => {
     setDescription("");
     setNumber("");
   };
+
+  const handleDeleteContact = async (contactId: string) => {
+    const afterDeletingContactList = await deleteContact(
+      categoryId!,
+      contactId
+    );
+    setCategory(afterDeletingContactList);
+  };
+
+  console.log(category?.contacts);
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col justify-center">
@@ -97,6 +109,23 @@ export const Contact = () => {
             <p className="flex-1 mr-12">Phone Number</p>
             <p></p>
           </div>
+          {category?.contacts.map((contactd) => (
+            <div
+              key={contactd._id}
+              className="flex justify-between text-yellow-500 p-5 border-b first:border-t space-x-3"
+            >
+              <FaUserAlt size={27} className="self-center" />
+              <h1 className="capitalize w-32 mx-3">{contactd.name}</h1>
+              <p className="flex-1">{contactd.description}</p>
+              <p className="flex-1">{contactd.number}</p>
+              <button
+                onClick={() => handleDeleteContact(contactd._id)}
+                className="px-2 bg-red-500 rounded-lg text-white"
+              >
+                Delete
+              </button>
+            </div>
+          ))}
         </div>
       </div>
     </div>
